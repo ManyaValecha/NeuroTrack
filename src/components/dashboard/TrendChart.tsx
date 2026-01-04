@@ -9,8 +9,8 @@ export default function TrendChart() {
                 <span className="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full">6 Month View</span>
             </div>
 
-            <div className="h-[250px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
+            <div className="w-full" style={{ minHeight: '250px', height: '250px' }}>
+                <ResponsiveContainer width="100%" height={250}>
                     <AreaChart data={CRI_HISTORY}>
                         <defs>
                             <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">

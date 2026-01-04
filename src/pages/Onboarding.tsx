@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useUser } from '../context/UserContext';
-import { Activity, User, Calendar, Users, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Activity, User, Calendar, Users, ArrowRight, ShieldCheck, UserCog } from 'lucide-react';
 
 export default function Onboarding() {
     const { setUser } = useUser();
@@ -10,7 +10,8 @@ export default function Onboarding() {
     const [formData, setFormData] = useState({
         name: '',
         age: '',
-        gender: 'Male'
+        gender: 'Male',
+        role: 'user' as 'admin' | 'user'
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -21,11 +22,13 @@ export default function Onboarding() {
             name: formData.name,
             age: parseInt(formData.age),
             gender: formData.gender,
-            id: `P-${Math.floor(Math.random() * 9000) + 1000}`
+            id: formData.role === 'admin' ? `ADM-${Math.floor(Math.random() * 900) + 100}` : `P-${Math.floor(Math.random() * 9000) + 1000}`,
+            role: formData.role,
+            criHistory: []
         };
 
         setUser(userData);
-        navigate('/');
+        navigate('/app');
     };
 
     return (
@@ -72,6 +75,22 @@ export default function Onboarding() {
                                         placeholder="e.g. Sarah Chen"
                                         className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-5 pl-14 pr-6 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                                     />
+                                </div>
+                            </div>
+
+                            {/* Role Selection */}
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-4">Account Type</label>
+                                <div className="relative group">
+                                    <UserCog className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-primary transition-colors" />
+                                    <select
+                                        value={formData.role}
+                                        onChange={(e) => setFormData({ ...formData, role: e.target.value as 'admin' | 'user' })}
+                                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-5 pl-14 pr-6 text-white appearance-none focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-medium"
+                                    >
+                                        <option value="user" className="bg-[#020617]">Patient</option>
+                                        <option value="admin" className="bg-[#020617]">Clinician / Admin</option>
+                                    </select>
                                 </div>
                             </div>
 

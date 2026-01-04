@@ -62,14 +62,14 @@ export default function FloatingChat() {
             const assistantMessage = response.choices[0].message.content || "I'm sorry, I couldn't process that request.";
             setMessages(prev => [...prev, { role: 'assistant', content: assistantMessage }]);
         } catch (error: any) {
-            const deploymentName = import.meta.env.VITE_AZURE_OPENAI_DEPLOYMENT || 'gpt-4o';
             console.error("Chat Error:", error);
-            const errorMessage = error.message?.includes('401')
-                ? "Connection to Azure AI failed (401 Unauthorized). Please check your API key."
-                : error.message?.includes('404')
-                    ? `Connection to Azure AI failed (404 Not Found). Please check your endpoint and deployment name (currently '${deploymentName}').`
-                    : `Connection to Azure AI failed: ${error.message || "Unknown error"}`;
-            setMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
+            // Fallback / Offline Mode
+            setTimeout(() => {
+                setMessages(prev => [...prev, {
+                    role: 'assistant',
+                    content: "I'm currently unable to connect to the Azure Neural Cloud. \n\nHowever, I can still assist you with:\n• Navigating the NeuroTrack Dashboard\n• Understanding CRI Scores\n• Reviewing local patient records\n\nPlease check your network connection for full diagnostic capabilities."
+                }]);
+            }, 1000);
         } finally {
             setIsLoading(false);
         }

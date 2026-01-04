@@ -11,10 +11,10 @@ export default function AppLayout() {
     const initials = user?.name.split(' ').map(n => n[0]).join('').toUpperCase() || '??';
 
     const navItems = [
-        { icon: LayoutDashboard, label: 'Overview', path: '/' },
-        { icon: Mic, label: 'Assessment', path: '/assessment' },
-        { icon: BarChart2, label: 'Analytics', path: '/analytics' },
-        { icon: Brain, label: 'Exercises', path: '/exercises' },
+        { icon: LayoutDashboard, label: 'Overview', path: '/app' },
+        { icon: Mic, label: 'Assessment', path: '/app/assessment' },
+        { icon: BarChart2, label: 'Analytics', path: '/app/analytics' },
+        { icon: Brain, label: 'Exercises', path: '/app/exercises' },
     ];
 
     return (
@@ -78,7 +78,9 @@ export default function AppLayout() {
                             <p className="text-sm font-bold text-white truncate">{user?.name}</p>
                             <div className="flex items-center gap-2 mt-1">
                                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                <p className="text-[10px] text-slate-500 uppercase font-black">Online • Clinical</p>
+                                <p className="text-[10px] text-slate-500 uppercase font-black">
+                                    {user?.role === 'admin' ? 'Admin' : 'Patient'} • Online
+                                </p>
                             </div>
                         </div>
                         <button

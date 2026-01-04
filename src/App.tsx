@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import AppLayout from './components/layout/AppLayout';
-import Dashboard from './pages/Dashboard';
+import LandingPage from './pages/LandingPage';
+import AdminDashboard from './pages/AdminDashboard';
+import UserDashboard from './pages/UserDashboard';
 import Assessment from './pages/Assessment';
 import Analytics from './pages/Analytics';
 import Onboarding from './pages/Onboarding';
@@ -16,23 +18,43 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function RoleRedirect() {
+  const { user } = useUser();
+  if (!user) return <Navigate to="/onboarding" replace />;
+  return <Navigate to={user.role === 'admin' ? "/app/admin" : "/app/user"} replace />;
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+        {/* Public Landing Page */}
+        <Route path="/" element={<LandingPage />} />
+
         <Route path="/onboarding" element={<Onboarding />} />
+
+        {/* Protected Application Routes */}
         <Route
-          path="/"
+          path="/app"
           element={
             <ProtectedRoute>
               <AppLayout />
             </ProtectedRoute>
           }
         >
-          <Route index element={
+          {/* Role-based redirect for /app index */}
+          <Route index element={<RoleRedirect />} />
+
+          <Route path="admin" element={
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-              <Dashboard />
+              <AdminDashboard />
+            </motion.div>
+          } />
+          <Route path="user" element={
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <UserDashboard />
             </motion.div>
           } />
           <Route path="assessment" element={

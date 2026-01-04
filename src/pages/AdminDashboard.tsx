@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CRIGauge from '../components/dashboard/CRIGauge';
 import TrendChart from '../components/dashboard/TrendChart';
@@ -7,7 +6,7 @@ import RiskRadar from '../components/dashboard/RiskRadar';
 import ActivityFeed from '../components/dashboard/ActivityFeed';
 import { listClinicalRecords } from '../lib/azure-storage';
 import { patientData, type PatientRecord } from '../data/patient-data';
-import { Database, Search, Shield, Zap, Users, Loader2, Plus, Activity } from 'lucide-react';
+import { Database, Search, Shield, Zap, Users, Loader2, Activity } from 'lucide-react';
 import { cn } from '../lib/utils';
 import LiveNeuralStream from '../components/dashboard/LiveNeuralStream';
 
@@ -26,8 +25,7 @@ const item = {
     show: { opacity: 1, y: 0 }
 };
 
-export default function Dashboard() {
-    const navigate = useNavigate();
+export default function AdminDashboard() {
     const [records, setRecords] = useState<PatientRecord[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -65,6 +63,22 @@ export default function Dashboard() {
             className="space-y-10 relative"
         >
             <LiveNeuralStream />
+
+            {/* Admin Header */}
+            <div className="glass-hud p-6 rounded-3xl border border-accent/20 bg-gradient-to-r from-accent/10 to-transparent">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <div className="flex items-center gap-3 mb-2">
+                            <h2 className="text-2xl font-black text-white italic">Clinical Admin Dashboard</h2>
+                            <span className="px-3 py-1 rounded-full bg-accent/20 border border-accent/30 text-accent text-[10px] font-black uppercase tracking-widest">
+                                Administrator
+                            </span>
+                        </div>
+                        <p className="text-slate-400 text-sm">System-wide patient monitoring and analytics</p>
+                    </div>
+                </div>
+            </div>
+
             {/* HUD Stats Row */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {[
@@ -118,21 +132,6 @@ export default function Dashboard() {
                 <div className="xl:col-span-4 space-y-8">
                     <motion.div variants={item} className="glass-hud p-8 rounded-4xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
                         <CRIGauge score={records.length > 0 ? records[0].status * 100 : 32} />
-                    </motion.div>
-
-                    <motion.div variants={item} className="glass-hud p-8 rounded-4xl border border-white/5 relative group overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <h4 className="text-xl font-bold text-white mb-3">Assessment Protocol</h4>
-                        <p className="text-sm text-slate-400 mb-6 leading-relaxed">
-                            Initialize the next cognitive biomarker sequence. High-fidelity voice sampling will be analyzed by Azure ML.
-                        </p>
-                        <button
-                            onClick={() => navigate('/assessment')}
-                            className="w-full py-4 bg-gradient-to-r from-primary to-accent hover:from-primary/80 hover:to-accent/80 text-white rounded-2xl font-bold transition-all shadow-lg shadow-primary/20 active:scale-[0.98] flex items-center justify-center gap-2 group"
-                        >
-                            <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
-                            Begin Assessment
-                        </button>
                     </motion.div>
                 </div>
             </div>
