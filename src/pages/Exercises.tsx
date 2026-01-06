@@ -2,14 +2,18 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Sparkles, Trophy, RotateCcw, Play, ChevronRight, Hash, Layers } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useUser } from '../context/UserContext';
 
 // --- Pattern Recall Game ---
 const PatternRecall = () => {
+    const { updateExerciseScore } = useUser();
     const [pattern, setPattern] = useState<number[]>([]);
     const [userInput, setUserInput] = useState<number[]>([]);
     const [level, setLevel] = useState(1);
     const [gameState, setGameState] = useState<'idle' | 'showing' | 'playing' | 'failed' | 'success'>('idle');
     const [score, setScore] = useState(0);
+
+    // ... (keep existing state)
     const [showingIndex, setShowingIndex] = useState(-1);
     const [timer, setTimer] = useState(0);
     const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
@@ -51,6 +55,8 @@ const PatternRecall = () => {
         if (idx !== pattern[userInput.length]) {
             setFeedback('wrong');
             setGameState('failed');
+            // Save score on failure
+            updateExerciseScore('pattern_recall', score);
             setTimeout(() => setFeedback(null), 1000);
             return;
         }
@@ -61,8 +67,13 @@ const PatternRecall = () => {
 
         // Check if completed level
         if (nextInput.length === pattern.length) {
-            setScore(s => s + level * 100);
+            const newScore = score + (level * 100);
+            setScore(newScore);
             setGameState('success');
+
+            // Save interim score
+            updateExerciseScore('pattern_recall', newScore);
+
             setTimeout(() => {
                 setLevel(l => l + 1);
                 startLevel(level + 1);
@@ -220,6 +231,7 @@ const PatternRecall = () => {
 
 // --- Semantic Matching Game ---
 const SemanticMatching = () => {
+    const { updateExerciseScore } = useUser();
     const pairs = [
         { id: 1, term: 'Stethoscope', match: 'Heart Rate' },
         { id: 2, term: 'Scalpel', match: 'Surgery' },
@@ -266,7 +278,12 @@ const SemanticMatching = () => {
             // Check if match
             if (shuffled[selected].id === shuffled[idx].id && shuffled[selected].type !== shuffled[idx].type) {
                 setSolved(s => [...s, shuffled[idx].id]);
-                setScore(s => s + 100);
+                const newScore = score + 100;
+                setScore(newScore);
+
+                // Save score progress
+                updateExerciseScore('semantic_matching', newScore);
+
                 setSelected(null);
             } else {
                 // Wrong match - show feedback
@@ -375,6 +392,13 @@ const SemanticMatching = () => {
 };
 
 export default function Exercises() {
+    const { user } = useUser();
+    const patternScore = user?.exerciseScores?.['pattern_recall'] || 0;
+    const matchingScore = user?.exerciseScores?.['semantic_matching'] || 0;
+
+    // Calculate percentile (mock)
+    const percentile = Math.min(99, 40 + Math.floor((patternScore + matchingScore) / 20));
+
     return (
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -400,7 +424,7 @@ export default function Exercises() {
                     </div>
                     <div>
                         <h4 className="text-white font-bold">Daily Cognitive Score</h4>
-                        <p className="text-xs text-slate-400">Your performance is within 85th percentile of clinical benchmarks.</p>
+                        <p className="text-xs text-slate-400">Total Score: {patternScore + matchingScore} • Percentile: {percentile}%</p>
                     </div>
                 </div>
                 <ChevronRight className="w-6 h-6 text-slate-600" />

@@ -137,14 +137,35 @@ export default function UserDashboard() {
                     <motion.div variants={item} className="glass-hud p-8 rounded-4xl border border-white/5 relative group overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         <h4 className="text-xl font-bold text-white mb-3">Brain Exercises</h4>
-                        <p className="text-sm text-slate-400 mb-6 leading-relaxed">
-                            Improve cognitive function with personalized exercises.
-                        </p>
+
+                        {(user?.exerciseScores?.['pattern_recall'] || user?.exerciseScores?.['semantic_matching']) ? (
+                            <div className="mb-6 space-y-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                                <div className="flex justify-between text-sm items-center">
+                                    <span className="text-slate-400 font-medium">Pattern Recall</span>
+                                    <span className="text-accent font-black">{user.exerciseScores['pattern_recall'] || 0}</span>
+                                </div>
+                                <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div className="h-full bg-accent" style={{ width: `${Math.min((user.exerciseScores['pattern_recall'] || 0) / 10, 100)}%` }} />
+                                </div>
+                                <div className="flex justify-between text-sm items-center mt-2">
+                                    <span className="text-slate-400 font-medium">Semantic Match</span>
+                                    <span className="text-primary font-black">{user.exerciseScores['semantic_matching'] || 0}</span>
+                                </div>
+                                <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div className="h-full bg-primary" style={{ width: `${Math.min((user.exerciseScores['semantic_matching'] || 0) / 10, 100)}%` }} />
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="text-sm text-slate-400 mb-6 leading-relaxed">
+                                Improve cognitive function with personalized exercises.
+                            </p>
+                        )}
+
                         <button
                             onClick={() => navigate('/app/exercises')}
                             className="w-full py-4 bg-white/5 border border-white/10 text-white rounded-2xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2"
                         >
-                            Try Exercises
+                            {user?.exerciseScores ? 'Continue Training' : 'Try Exercises'}
                         </button>
                     </motion.div>
                 </div>

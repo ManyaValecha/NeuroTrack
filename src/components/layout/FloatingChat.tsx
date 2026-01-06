@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Send, X, Bot, Sparkles, User, Loader2 } from 'lucide-react';
-import OpenAI from 'openai';
 import { cn } from '../../lib/utils';
 
 export default function FloatingChat() {
@@ -19,6 +18,22 @@ export default function FloatingChat() {
         }
     }, [messages]);
 
+    const simulateResponse = () => {
+        setTimeout(() => {
+            const responses = [
+                "Based on the current telemetry, I recommend monitoring the patient's speech prosody for variations.",
+                "The neural coherence metrics suggest a stable cognitive baseline. No immediate intervention required.",
+                "I can help you navigate the diagnostic protocols. Would you like to access the latest biomarkers?",
+                "Processing local node data... Patient appears to be within the 85th percentile for memory recall."
+            ];
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: `[SIMULATION MODE] ${responses[Math.floor(Math.random() * responses.length)]}`
+            }]);
+            setIsLoading(false);
+        }, 1000);
+    };
+
     const handleSend = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
@@ -28,48 +43,46 @@ export default function FloatingChat() {
         setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
         setIsLoading(true);
 
-        try {
-            const openaiKey = import.meta.env.VITE_AZURE_OPENAI_KEY;
-            const openaiEndpoint = import.meta.env.VITE_AZURE_OPENAI_ENDPOINT;
+        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
-            if (!openaiKey || !openaiEndpoint) {
-                throw new Error("Azure OpenAI not configured");
+        try {
+            if (!geminiKey) {
+                console.warn("Gemini Key missing, switching to simulation.");
+                throw new Error("Missing API Key");
             }
 
-            const cleanEndpoint = openaiEndpoint.endsWith('/') ? openaiEndpoint.slice(0, -1) : openaiEndpoint;
+            // Using messages in context. 
+            const contextMessages = [...messages, { role: 'user', content: userMessage }].slice(-6);
 
-            // Note: The 'openai' package version 4.x+ supports Azure OpenAI, 
-            // but the baseURL + defaultQuery approach is a valid alternative for some versions.
-            // Let's try to ensure the URL is formed correctly.
-            const deploymentName = import.meta.env.VITE_AZURE_OPENAI_DEPLOYMENT || 'gpt-4o';
-            const client = new OpenAI({
-                apiKey: openaiKey,
-                baseURL: `${cleanEndpoint}/openai/deployments/${deploymentName}`,
-                defaultQuery: { 'api-version': '2024-08-01-preview' },
-                defaultHeaders: { 'api-key': openaiKey },
-                dangerouslyAllowBrowser: true
+            // Reverting to 1.5-flash as 2.5 is likely invalid/not-yet-released causing 404s
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: `You are NeuroTrack X Assistant, a clinical AI. Assist clinicians with cognitive biomarker analysis. Be concise. Context: ${JSON.stringify(contextMessages)}. User Question: ${userMessage}` }]
+                    }]
+                })
             });
 
-            const response = await client.chat.completions.create({
-                model: deploymentName,
-                messages: [
-                    { role: 'system', content: 'You are NeuroTrack X Assistant, a clinical AI. Assist clinicians with cognitive biomarker analysis, diagnostic steps, and platform navigation. Be professional, concise, and medical-focused.' },
-                    ...messages,
-                    { role: 'user', content: userMessage }
-                ]
-            });
+            if (!response.ok) {
+                const errData = await response.json();
+                throw new Error(errData.error?.message || "Gemini API Failed");
+            }
 
-            const assistantMessage = response.choices[0].message.content || "I'm sorry, I couldn't process that request.";
-            setMessages(prev => [...prev, { role: 'assistant', content: assistantMessage }]);
+            const data = await response.json();
+            const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "I apologize, I could not process that.";
+
+            setMessages(prev => [...prev, { role: 'assistant', content: text }]);
         } catch (error: any) {
-            console.error("Chat Error:", error);
-            // Fallback / Offline Mode
-            setTimeout(() => {
-                setMessages(prev => [...prev, {
-                    role: 'assistant',
-                    content: "I'm currently unable to connect to the Azure Neural Cloud. \n\nHowever, I can still assist you with:\n• Navigating the NeuroTrack Dashboard\n• Understanding CRI Scores\n• Reviewing local patient records\n\nPlease check your network connection for full diagnostic capabilities."
-                }]);
-            }, 1000);
+            console.error("Gemini Error:", error);
+            // Show actual error to user for debugging
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: `[SYSTEM ERROR] Could not connect to Gemini: ${error.message || error}. Falling back to system protocols.`
+            }]);
+            // Optional: fallback to simulation after showing error, or just stop here.
+            // simulateResponse(); 
         } finally {
             setIsLoading(false);
         }

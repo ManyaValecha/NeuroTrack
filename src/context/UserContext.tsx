@@ -13,6 +13,7 @@ export interface UserData {
     id: string;
     role: 'admin' | 'user';
     criHistory: CRIRecord[];
+    exerciseScores: Record<string, number>;
 }
 
 interface UserContextType {
@@ -20,6 +21,7 @@ interface UserContextType {
     setUser: (user: UserData) => void;
     clearUser: () => void;
     addCRIRecord: (score: number) => void;
+    updateExerciseScore: (gameId: string, score: number) => void;
     getCurrentCRI: () => number;
 }
 
@@ -32,8 +34,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     });
 
     const setUser = (userData: UserData) => {
-        setUserState(userData);
-        localStorage.setItem('neurotrack_user', JSON.stringify(userData));
+        const enhancedData = { ...userData, exerciseScores: userData.exerciseScores || {} };
+        setUserState(enhancedData);
+        localStorage.setItem('neurotrack_user', JSON.stringify(enhancedData));
     };
 
     const clearUser = () => {
@@ -58,6 +61,23 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setUser(updatedUser);
     };
 
+    const updateExerciseScore = (gameId: string, score: number) => {
+        if (!user) return;
+
+        // Keep the highest score
+        const currentScore = user.exerciseScores?.[gameId] || 0;
+        if (score > currentScore) {
+            const updatedUser = {
+                ...user,
+                exerciseScores: {
+                    ...(user.exerciseScores || {}),
+                    [gameId]: score
+                }
+            };
+            setUser(updatedUser);
+        }
+    };
+
     const getCurrentCRI = (): number => {
         if (!user || !user.criHistory || user.criHistory.length === 0) {
             return 0; // Default for new users
@@ -67,7 +87,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <UserContext.Provider value={{ user, setUser, clearUser, addCRIRecord, getCurrentCRI }}>
+        <UserContext.Provider value={{ user, setUser, clearUser, addCRIRecord, updateExerciseScore, getCurrentCRI }}>
             {children}
         </UserContext.Provider>
     );

@@ -4,6 +4,7 @@ import { cn } from '../../lib/utils';
 import { motion } from 'framer-motion';
 import { useUser } from '../../context/UserContext';
 import FloatingChat from './FloatingChat';
+import Footer from './Footer';
 
 export default function AppLayout() {
     const location = useLocation();
@@ -137,6 +138,7 @@ export default function AppLayout() {
                 <div className="p-6 md:p-10 max-w-7xl mx-auto pb-24 md:pb-10">
                     <Outlet />
                 </div>
+                <Footer />
             </main>
 
             {/* Global floating AI assistant */}
