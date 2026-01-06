@@ -7,10 +7,18 @@
 
 *Built for the Microsoft Imagine Cup*
 
-[![Azure OpenAI](https://img.shields.io/badge/Azure-OpenAI-blue?logo=microsoftazure\&logoColor=white)](https://azure.microsoft.com/en-us/services/cognitive-services/openai-service/)
-[![Azure Machine Learning](https://img.shields.io/badge/Azure-ML-0078D4?logo=microsoftazure\&logoColor=white)](https://azure.microsoft.com/en-us/services/machine-learning/)
-[![Azure Speech](https://img.shields.io/badge/Azure-Speech-blue?logo=microsoftazure\&logoColor=white)](https://azure.microsoft.com/en-us/services/cognitive-services/speech-services/)
+[![Azure OpenAI](https://img.shields.io/badge/Azure-OpenAI-blue?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com/en-us/services/cognitive-services/openai-service/)
+[![Azure Machine Learning](https://img.shields.io/badge/Azure-ML-0078D4?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com/en-us/services/machine-learning/)
+[![Azure Speech](https://img.shields.io/badge/Azure-Speech-blue?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com/en-us/services/cognitive-services/speech-services/)
+[![Deployed on Azure](https://img.shields.io/badge/Deployment-Live-success?logo=microsoftazure&logoColor=white)](https://neurotrackx-ahhyd7hfbrerd5cu.southeastasia-01.azurewebsites.net/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
+
+## 🔗 Live Demo & Repository
+
+- **🚀 Live Deployment:** [Click here to launch NeuroTrack X](https://neurotrackx-ahhyd7hfbrerd5cu.southeastasia-01.azurewebsites.net/)
+- **💻 GitHub Repository:** [github.com/ManyaValecha/NeuroTrack](https://github.com/ManyaValecha/NeuroTrack)
 
 ---
 
@@ -31,6 +39,7 @@ NeuroTrack X is designed as a modern **Clinical Heads-Up Display (HUD)** optimiz
 * **Neural Visualizer**: Real-time audio frequency visualization using HTML5 Canvas
 * **Live Neural Stream**: Dynamic background simulating continuous patient telemetry
 * **Motion Orchestration**: Smooth page transitions and micro-interactions using Framer Motion
+* **AI Assistant**: Integrated Floating Chatbot powered by **Azure OpenAI** & **Google Gemini** for instant clinical support.
 
 ---
 
@@ -42,6 +51,7 @@ The platform is built end-to-end on **Microsoft Azure**, ensuring scalability, r
 * **Azure Speech SDK**: Neural-quality transcription and acoustic feature analysis
 * **Azure Machine Learning**: Real-time cognitive risk classification via managed endpoints
 * **Azure Data Lake Gen2**: Secure storage for longitudinal patient data
+* **Azure App Service**: High-performance hosting for the clinical dashboard
 
 ---
 
@@ -72,8 +82,9 @@ graph TD
 * **Animation**: Framer Motion
 * **Charts**: Recharts
 * **State Management**: React Context API
-* **AI Services**: Azure OpenAI, Azure Speech, Azure Machine Learning
+* **AI Services**: Azure OpenAI, Azure Speech, Azure Machine Learning, Google Gemini
 * **Storage**: Azure Data Lake Gen2
+* **Deployment**: Azure App Service (CI/CD via GitHub Actions)
 
 ---
 
@@ -109,22 +120,19 @@ NeuroTrack X is offered as a **subscription-based SaaS platform** to hospitals, 
 
 ### Prerequisites
 
-* Node.js v18+
+* Node.js v20+
 * Azure subscription with:
-
   * Azure OpenAI
   * Azure Speech Services
   * Azure Machine Learning
-
----
 
 ### Installation
 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/ManyaValecha/neurotrack-xx.git
-   cd neurotrack-xx
+   git clone https://github.com/ManyaValecha/NeuroTrack.git
+   cd NeuroTrack
    ```
 
 2. **Configure environment variables**
@@ -137,6 +145,8 @@ NeuroTrack X is offered as a **subscription-based SaaS platform** to hospitals, 
 
    VITE_AZURE_SPEECH_KEY=your_key
    VITE_AZURE_SPEECH_REGION=your_region
+   
+   VITE_GEMINI_API_KEY=your_gemini_key
    ```
 
 3. **Install dependencies and run**
