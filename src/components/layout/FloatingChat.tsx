@@ -18,21 +18,21 @@ export default function FloatingChat() {
         }
     }, [messages]);
 
-    const simulateResponse = () => {
-        setTimeout(() => {
-            const responses = [
-                "Based on the current telemetry, I recommend monitoring the patient's speech prosody for variations.",
-                "The neural coherence metrics suggest a stable cognitive baseline. No immediate intervention required.",
-                "I can help you navigate the diagnostic protocols. Would you like to access the latest biomarkers?",
-                "Processing local node data... Patient appears to be within the 85th percentile for memory recall."
-            ];
-            setMessages(prev => [...prev, {
-                role: 'assistant',
-                content: `[SIMULATION MODE] ${responses[Math.floor(Math.random() * responses.length)]}`
-            }]);
-            setIsLoading(false);
-        }, 1000);
-    };
+    // const simulateResponse = () => {
+    //     setTimeout(() => {
+    //         const responses = [
+    //             "Based on the current telemetry, I recommend monitoring the patient's speech prosody for variations.",
+    //             "The neural coherence metrics suggest a stable cognitive baseline. No immediate intervention required.",
+    //             "I can help you navigate the diagnostic protocols. Would you like to access the latest biomarkers?",
+    //             "Processing local node data... Patient appears to be within the 85th percentile for memory recall."
+    //         ];
+    //         setMessages(prev => [...prev, {
+    //             role: 'assistant',
+    //             content: `[SIMULATION MODE] ${responses[Math.floor(Math.random() * responses.length)]}`
+    //         }]);
+    //         setIsLoading(false);
+    //     }, 1000);
+    // };
 
     const handleSend = async (e: React.FormEvent) => {
         e.preventDefault();
