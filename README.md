@@ -21,7 +21,12 @@
 - **💻 GitHub Repository:** [github.com/ManyaValecha/NeuroTrack](https://github.com/ManyaValecha/NeuroTrack)
 
 ---
-
+<img width="1710" height="1107" alt="Screenshot 2026-01-07 at 11 29 24 AM" src="https://github.com/user-attachments/assets/e8dacdf0-f8a6-48de-b070-7cfe8d5b02e0" />
+<img width="1710" height="1107" alt="Screenshot 2026-01-07 at 11 29 34 AM" src="https://github.com/user-attachments/assets/d718d84e-a2c5-46bc-952b-396002a6339a" />
+<img width="1710" height="1107<img width="1710" height="1107" alt="Screenshot 2026-01-07 at 11 29 55 AM" src="https://github.com/user-attachments/assets/f1a4fb2f-ebcc-4e64-ab4e-a7d36ec9b020" />
+" alt="Screenshot 2026-01-07 at 11 29 42 AM" src="https://github.com/user-attachments/assets/d4b7eefa-f52b-4415-af1a-1f0388fde6cc" />
+<img width="1710" height="1107" alt="Screenshot 2026-01-07 at 11 50 05 AM" src="https://github.com/user-attachments/assets/3daf2bfc-b5ae-408a-8c24-6d70c3941bb0" />
+https://youtu.be/UmNk-j0OPgQ?si=pVNCvKTdhk9tN1mN
 ## 🌟 Vision
 
 Cognitive decline develops gradually, yet most diagnoses occur only after irreversible damage. Traditional screening methods are episodic, invasive, and difficult to scale.
