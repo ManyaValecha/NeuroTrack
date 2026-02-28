@@ -175,5 +175,5 @@ MIT License © 2026 NeuroTrack X
 
 ---
 
-*Proudly developed for the **Microsoft Imagine Cup**.
+*Proudly developed for the **AI for Bharat Hackathon**.
 Advancing early detection through responsible, scalable AI.*
