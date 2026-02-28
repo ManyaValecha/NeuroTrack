@@ -1,23 +1,17 @@
 
----
+
 
 # 🧠 NeuroTrack X
 
 ### **Next-Gen Clinical Workstation for Early Cognitive Risk Detection**
 
-*Built for the Microsoft Imagine Cup*
+*Built for the AI for Bharat Hackathon* 
 
-[![Azure OpenAI](https://img.shields.io/badge/Azure-OpenAI-blue?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com/en-us/services/cognitive-services/openai-service/)
-[![Azure Machine Learning](https://img.shields.io/badge/Azure-ML-0078D4?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com/en-us/services/machine-learning/)
-[![Azure Speech](https://img.shields.io/badge/Azure-Speech-blue?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com/en-us/services/cognitive-services/speech-services/)
-[![Deployed on Azure](https://img.shields.io/badge/Deployment-Live-success?logo=microsoftazure&logoColor=white)](https://neurotrackx-ahhyd7hfbrerd5cu.southeastasia-01.azurewebsites.net/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## 🔗 Live Demo & Repository
+## 🔗  Repository
 
-- **🚀 Live Deployment:** [Click here to launch NeuroTrack X](https://neurotrackx-ahhyd7hfbrerd5cu.southeastasia-01.azurewebsites.net/)
 - **💻 GitHub Repository:** [github.com/ManyaValecha/NeuroTrack](https://github.com/ManyaValecha/NeuroTrack)
 
 ---
@@ -34,7 +28,7 @@ https://youtu.be/UmNk-j0OPgQ?si=pVNCvKTdhk9tN1mN
 
 Cognitive decline develops gradually, yet most diagnoses occur only after irreversible damage. Traditional screening methods are episodic, invasive, and difficult to scale.
 
-**NeuroTrack X** leverages **Microsoft Azure AI** to detect early cognitive risk through **speech-based biomarkers**, enabling proactive, continuous, and non-invasive screening. By analyzing subtle changes in language, acoustics, and prosody, NeuroTrack X supports earlier clinical intervention and long-term patient monitoring.
+**NeuroTrack X** leverages ** AWS AI** to detect early cognitive risk through **speech-based biomarkers**, enabling proactive, continuous, and non-invasive screening. By analyzing subtle changes in language, acoustics, and prosody, NeuroTrack X supports earlier clinical intervention and long-term patient monitoring.
 
 ---
 
@@ -47,40 +41,36 @@ NeuroTrack X is designed as a modern **Clinical Heads-Up Display (HUD)** optimiz
 * **Neural Visualizer**: Real-time audio frequency visualization using HTML5 Canvas
 * **Live Neural Stream**: Dynamic background simulating continuous patient telemetry
 * **Motion Orchestration**: Smooth page transitions and micro-interactions using Framer Motion
-* **AI Assistant**: Integrated Floating Chatbot powered by **Azure OpenAI** & **Google Gemini** for instant clinical support.
+* **AI Assistant**: Integrated Floating Chatbot powered by **Amazon Bedrock (Claude 3.5 Sonnet** for instant clinical support.
 
 ---
 
-### 🤖 Azure-Native Intelligence
+### 🤖 AWS-Native Intelligence
 
-The platform is built end-to-end on **Microsoft Azure**, ensuring scalability, reliability, and enterprise-grade security:
-
-* **Azure OpenAI (GPT-4o)**: Extracts linguistic and semantic biomarkers from speech
-* **Azure Speech SDK**: Neural-quality transcription and acoustic feature analysis
-* **Azure Machine Learning**: Real-time cognitive risk classification via managed endpoints
-* **Azure Data Lake Gen2**: Secure storage for longitudinal patient data
-* **Azure App Service**: High-performance hosting for the clinical dashboard
+The platform is built end-to-end on Amazon AWS, ensuring scalability, reliability, and enterprise-grade security:
+Amazon Bedrock (Claude 3.5 Sonnet): Extracts linguistic and semantic biomarkers from speech
+Amazon Transcribe: Neural-quality transcription and acoustic feature analysis
+Amazon SageMaker: Real-time cognitive risk classification via managed endpoints
+Amazon S3 + DynamoDB: Secure storage for longitudinal patient data and session metadata
+AWS Amplify / Elastic Beanstalk: High-performance hosting for the clinical dashboard
 
 ---
 
 ## 🏗️ System Architecture
 
-```mermaid
 graph TD
     User((Clinician)) --> Dashboard[HUD Dashboard]
     Dashboard --> Assessment[Neural Assessment]
 
-    subgraph Azure Cloud
-        Assessment --> SpeechSDK[Azure Speech Services]
-        SpeechSDK --> AOAI[Azure OpenAI GPT-4o]
-        AOAI --> AML[Azure Machine Learning]
-        AML --> ADLS[(Azure Data Lake Gen2)]
+    subgraph AWS Cloud
+        Assessment --> Transcribe[Amazon Transcribe]
+        Transcribe --> Bedrock[Amazon Bedrock (Claude 3.5 Sonnet)]
+        Bedrock --> SageMaker[Amazon SageMaker]
+        SageMaker --> Storage[(Amazon S3 + DynamoDB)]
     end
 
-    ADLS --> Dashboard
-    AOAI --> Analytics[Clinical Analytics]
-```
-
+    Storage --> Dashboard
+    Bedrock --> Analytics[Clinical Analytics]
 ---
 
 ## 🛠️ Technical Stack
@@ -90,10 +80,9 @@ graph TD
 * **Animation**: Framer Motion
 * **Charts**: Recharts
 * **State Management**: React Context API
-* **AI Services**: Azure OpenAI, Azure Speech, Azure Machine Learning, Google Gemini
-* **Storage**: Azure Data Lake Gen2
-* **Deployment**: Azure App Service (CI/CD via GitHub Actions)
-
+AI Services: Amazon Bedrock (Claude 3.5 Sonnet), Amazon Transcribe, Amazon SageMaker
+Storage: Amazon S3 + DynamoDB
+Deployment: AWS Amplify / Elastic Beanstalk (CI/CD via GitHub Actions)
 ---
 
 ## 💼 Business Model
@@ -128,11 +117,12 @@ NeuroTrack X is offered as a **subscription-based SaaS platform** to hospitals, 
 
 ### Prerequisites
 
-* Node.js v20+
-* Azure subscription with:
-  * Azure OpenAI
-  * Azure Speech Services
-  * Azure Machine Learning
+Node.js v20+
+AWS account with access to:
+Amazon Bedrock
+Amazon Transcribe
+Amazon SageMaker
+Amazon S3 and DynamoDB
 
 ### Installation
 
@@ -144,17 +134,21 @@ NeuroTrack X is offered as a **subscription-based SaaS platform** to hospitals, 
    ```
 
 2. **Configure environment variables**
-   Create a `.env` file in the root directory (see `.env.example`):
+  # Amazon Bedrock
+VITE_AWS_BEDROCK_KEY=your_key
+VITE_AWS_BEDROCK_REGION=your_region
+VITE_AWS_BEDROCK_MODEL=claude-3.5-sonnet
 
-   ```bash
-   VITE_AZURE_OPENAI_KEY=your_key
-   VITE_AZURE_OPENAI_ENDPOINT=your_endpoint
-   VITE_AZURE_OPENAI_DEPLOYMENT=gpt-4o
+# Amazon Transcribe
+VITE_AWS_TRANSCRIBE_KEY=your_key
+VITE_AWS_TRANSCRIBE_REGION=your_region
 
-   VITE_AZURE_SPEECH_KEY=your_key
-   VITE_AZURE_SPEECH_REGION=your_region
-   
-   VITE_GEMINI_API_KEY=your_gemini_key
+# Amazon SageMaker
+VITE_AWS_SAGEMAKER_ENDPOINT=your_endpoint
+
+# AWS Storage / DynamoDB (if needed)
+VITE_AWS_S3_BUCKET=your_bucket_name
+VITE_AWS_DYNAMODB_TABLE=your_table_name
    ```
 
 3. **Install dependencies and run**
