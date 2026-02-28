@@ -22,7 +22,8 @@
 <img width="1710" height="1107" alt="Screenshot 2026-01-07 at 11 50 05 AM" src="https://github.com/user-attachments/assets/3daf2bfc-b5ae-408a-8c24-6d70c3941bb0" />
 DEMO VIDEO - 
 https://youtu.be/UmNk-j0OPgQ?si=pVNCvKTdhk9tN1mN
-
+The current demo and screenshots were captured from our original Azure prototype due to AWS credits pending activation.
+All backend services (AI, transcription, and storage) are fully AWS-native, and once credits are available, the pipeline will run entirely on AWS (Bedrock, Transcribe, SageMaker, S3, DynamoDB).
 
 ## 🌟 Vision
 
